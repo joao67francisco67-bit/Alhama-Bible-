@@ -22,7 +22,8 @@
   <script type="importmap">
     {
       "imports": {
-        "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
       }
     }
   </script>
@@ -32,6 +33,7 @@
 
   <script type="module">
     import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
     // 1. CONFIGURAÇÃO DA CENA E CÂMERA
     const scene = new THREE.Scene();
@@ -49,6 +51,22 @@
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(5, 10, 5);
     scene.add(light);
+
+    // CARREGAR MODELO 3D (ALAHAMA.GLB)
+    const loader = new GLTFLoader();
+    loader.load(
+      './alahama.glb',
+      (gltf) => {
+        const model = gltf.scene;
+        model.position.set(0, 0, 0);
+        model.scale.set(1, 1, 1);
+        scene.add(model);
+      },
+      undefined,
+      (error) => {
+        console.error('Erro ao carregar o modelo 3D:', error);
+      }
+    );
 
     // 2. SISTEMA DE BLOCOS INTERATIVOS (SANDBOX)
     const blocosInterativos = [];
